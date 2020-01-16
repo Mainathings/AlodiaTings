@@ -1,0 +1,82 @@
+---
+title: "Alodia Project"
+author: "Mark Kinyanjui"
+date: "1/16/2020"
+output: html_document
+---
+
+## R Markdown
+
+This project attempts to look at Alodia data collected through Sportsengine registration system since 2017 to identify trends, make valuable decisions and to be used as a potential marketing tool 
+
+## Dataset & Packages
+```{r setup, include=FALSE}
+library(readxl)
+## Finds the names of the excel sheets
+excel_sheets(path = "/Users/alodia/Documents/Alodia\ Data\ Analytics\ /AlodiaPrograms.xlsm")
+
+
+tournaments <- read_excel("/Users/alodia/Documents/Alodia\ Data\ Analytics\ /AlodiaPrograms.xlsm" , sheet = "tournaments")
+
+yl <- read_excel("/Users/alodia/Documents/Alodia\ Data\ Analytics\ /AlodiaPrograms.xlsm" , sheet = "yl")
+
+camps <- read_excel("/Users/alodia/Documents/Alodia\ Data\ Analytics\ /AlodiaPrograms.xlsm" , sheet = "camps")
+
+
+
+```
+
+## Tournament Breakdown 
+
+
+
+Let's see if we can see which months are the busiest by year for tournaments 
+
+```{r}
+names(tournaments)
+library(dplyr)
+library(tidyverse)
+### Table for totals by month 
+tournaments %>%
+  select(`Team Name`,`Grade (4th-12th)`,`Tournament Registration`, Gender, Month,Year, `Registration Date`,`Account Email`, Net) %>%
+  group_by(Month,Year) %>%
+  summarise(Total_by_month = sum(Net , na.rm = TRUE)) %>%
+  arrange(Total_by_month) 
+  
+
+### Visualizing the monthly income for tournaments 
+tournaments %>%
+  select(`Team Name`,`Grade (4th-12th)`,`Tournament Registration`, Gender, Month,Year, `Registration Date`,`Account Email`, Net) %>%
+  group_by(Month,Year) %>%
+  summarise(total_by_month = sum(Net ,na.rm = TRUE)) %>%
+  arrange(total_by_month) %>%
+  filter(Year == 2017) %>%
+  ggplot(aes(total_by_month, fct_reorder(Month,total_by_month))) + geom_point()+
+  ggtitle("Monthly Income Tournaments 2017", subtitle = "Started using Sportsengine mid february")
+
+tournaments %>%
+  select(`Team Name`,`Grade (4th-12th)`,`Tournament Registration`, Gender, Month,Year, `Registration Date`,`Account Email`, Net) %>%
+  group_by(Month,Year) %>%
+  summarise(total_by_month = sum(Net ,na.rm = TRUE)) %>%
+  arrange(total_by_month) %>%
+  filter(Year == 2018) %>%
+  ggplot(aes(total_by_month, fct_reorder(Month,total_by_month))) + geom_point()+
+  ggtitle("Monthly Income Tournaments 2018")
+
+
+tournaments %>%
+  select(`Team Name`,`Grade (4th-12th)`,`Tournament Registration`, Gender, Month,Year, `Registration Date`,`Account Email`, Net) %>%
+  group_by(Month,Year) %>%
+  summarise(total_by_month = sum(Net ,na.rm = TRUE)) %>%
+  arrange(total_by_month) %>%
+  filter(Year == 2019) %>%
+  ggplot(aes(total_by_month, fct_reorder(Month,total_by_month))) + geom_point()+
+  ggtitle("Monthly Income Tournaments 2019", subtitle = "Only includes partial december data")
+
+
+
+```
+
+
+
+
