@@ -2,7 +2,7 @@
 title: "Alodia Project"
 author: "Mark Kinyanjui"
 date: "1/16/2020"
-output: html_document
+output: github_document
 ---
 
 ## R Markdown
